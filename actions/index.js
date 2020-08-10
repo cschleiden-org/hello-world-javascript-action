@@ -15,8 +15,12 @@ async function main() {
     // `who-to-greet` input defined in action metadata file
     const nameToGreet = core.getInput('who-to-greet');
     console.log(`Hello ${nameToGreet}!`);
-    console.log(github.context.payload.pull_request.title);
-    await appendFileAsync("./Readme.md", "\n New line");
+    const prName = github.context.payload.pull_request.title;
+    console.log(prName);
+    if (await existsAsync(path)) {
+      console.log("path exists");
+    }
+    await appendFileAsync("./Readme.md", `\n ${prName}`);
     // const statResult = await statAsync("./Readme.md");
     // setOutput("size", `${statResult.size}`);
     const time = (new Date()).toTimeString();
