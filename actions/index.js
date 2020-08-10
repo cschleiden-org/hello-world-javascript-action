@@ -17,10 +17,11 @@ async function main() {
     console.log(`Hello ${nameToGreet}!`);
     const prName = github.context.payload.pull_request.title;
     console.log(prName);
+    const path = "./Readme.md"
     if (await existsAsync(path)) {
       console.log("path exists");
     }
-    await appendFileAsync("./Readme.md", `\n ${prName}`);
+    await appendFileAsync(path, `\n ${prName}`);
     // const statResult = await statAsync("./Readme.md");
     // setOutput("size", `${statResult.size}`);
     const time = (new Date()).toTimeString();
