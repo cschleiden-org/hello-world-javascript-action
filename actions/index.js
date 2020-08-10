@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const {promisify} = require('util');
+const { appendFile, exists, writeFile, stat } = require("fs");
 
 const appendFileAsync = promisify(appendFile);
 const existsAsync = promisify(exists);
