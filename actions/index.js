@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-import { promisify } from "util";
+const {promisify} = require('util');
 
 const appendFileAsync = promisify(appendFile);
 const existsAsync = promisify(exists);
