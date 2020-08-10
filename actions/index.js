@@ -19,8 +19,8 @@ async function main() {
     await appendFileAsync("./Readme.md", "\n New line");
     const statResult = await statAsync("./Readme.md");
     setOutput("size", `${statResult.size}`);
-    // const time = (new Date()).toTimeString();
-    // core.setOutput("time", time);
+    const time = (new Date()).toTimeString();
+    core.setOutput("time", time);
     // Get the JSON webhook payload for the event that triggered the workflow
     // const payload = JSON.stringify(github.context.payload, undefined, 2)
     // console.log(`The event payload: ${payload}`);
