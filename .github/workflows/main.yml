@@ -9,6 +9,8 @@ jobs:
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Hello world action step
         uses: ./actions/ # Uses an action in the root directory
         id: hello
@@ -16,9 +18,9 @@ jobs:
           who-to-greet: 'Mona the Octocat'
       - name: Commit report
         run: |
-          git add .
           git config --global user.name 'Your Name'
           git config --global user.email 'your-username@users.noreply.github.com'
+          git add Readme.md
           git commit -am "Automated report"
           git push
       # Use the output from the `hello` step
