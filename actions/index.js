@@ -1,12 +1,13 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const {promisify} = require('util');
-const { appendFile, exists, writeFile, stat } = require("fs");
+const { appendFile, exists, writeFile, stat, readFile } = require("fs");
 
 const appendFileAsync = promisify(appendFile);
 const existsAsync = promisify(exists);
 const writeFileAsync = promisify(writeFile);
 const statAsync = promisify(stat);
+const readFileAsync = promisify(readFile);
 
 main().catch((error) => setFailed(error.message));
 
@@ -20,26 +21,30 @@ async function main() {
     let changelogLine = "- ";
     switch (prSplit[0]) {
       case 'feat':
-        changelogLine += "[Feature] ";
+        changelogLine += "[Feature]";
         break;
       case 'patch':
-        changelogLine += "[Patch] ";
+        changelogLine += "[Patch]";
         break;
       case 'real':
-        changelogLine += "[Release] ";
+        changelogLine += "[Release]";
         break;
       default:
         return;
     }
     prSplit = prSplit[1].split(")");
-    changelogLine += prSplit[1];
-    changelogLine += " in **" + prSplit[0] + "**";
-    changelogLine += ` ([#${prNum}](${prLink}))`;
+    changelogLine += `${prSplit[1]} in **${prSplit[0]}** ([#${prNum}](${prLink}))`;
     console.log(changelogLine);
-    const path = "./Readme.md"
-    if (await existsAsync(path)) {
-      console.log("path exists");
-    }
+
+    const path = "./Readme.md";
+    const fileContents = await readFileAsync(path, function read(err, data) {
+      if (err) {
+          throw err;
+      }
+      return data;
+    });
+    const splitFile = fileContents.split("## Unreleased\n");
+    console.log(splitFile[0);
     await appendFileAsync(path, `${changelogLine}`);
     // const statResult = await statAsync("./Readme.md");
     // setOutput("size", `${statResult.size}`);
