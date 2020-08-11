@@ -50,7 +50,7 @@ async function main() {
     prSplit = prSplit.split("\n")[0];
     console.log(prSplit);
     console.log("-------------------------");
-    const changelogLine = `\n- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))`;
+    const changelogLine = `- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))\n`;
     // let prSplit = prName.split("(");
     // let changelogLine = "\n- ";
     // switch (prSplit[0]) {
