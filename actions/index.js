@@ -1,13 +1,12 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const {promisify} = require('util');
-const { appendFile, exists, writeFile, stat, readFile } = require("fs");
+const { appendFile, exists, writeFile, stat, readFileSync } = require("fs");
 
 const appendFileAsync = promisify(appendFile);
 const existsAsync = promisify(exists);
 const writeFileAsync = promisify(writeFile);
 const statAsync = promisify(stat);
-const readFileAsync = promisify(readFile);
 
 main().catch((error) => setFailed(error.message));
 
@@ -37,12 +36,7 @@ async function main() {
     console.log(changelogLine);
 
     const path = "./Readme.md";
-    const fileContents = await readFileAsync(path, {encoding: 'utf8'}, function read(err, data) {
-      if (err) {
-          throw err;
-      }
-      return data;
-    });
+    const fileContents = readFileSync(path,'utf8');
     const splitFile = fileContents.split("## Unreleased\n");
     console.log(splitFile[0]);
     await appendFileAsync(path, `${changelogLine}`);
