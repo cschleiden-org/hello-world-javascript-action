@@ -44,7 +44,7 @@ async function main() {
       return data;
     });
     const splitFile = fileContents.split("## Unreleased\n");
-    console.log(splitFile[0);
+    console.log(splitFile[0]);
     await appendFileAsync(path, `${changelogLine}`);
     // const statResult = await statAsync("./Readme.md");
     // setOutput("size", `${statResult.size}`);
