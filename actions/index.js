@@ -19,7 +19,9 @@ async function main() {
   
     if (prBody.search('-->') !== -1) {
       console.log("splitting for comment");
+      
       prBody = prBody.split("-->")[1];
+      console.log(prBody);
     }
     const feature = prBody.search('[Feature]');
     const patch = prBody.search('[Patch]'); 
@@ -34,8 +36,10 @@ async function main() {
 
     console.log("splitting for change key");
     let prSplit = prBody.split(changelogKey)[1];
+    console.log(prSplit);
     console.log("splitting for new line");
     prSplit = prSplit.split("\n")[0];
+    console.log(prSplit);
     const changelogLine = `\n- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))`;
     // let prSplit = prName.split("(");
     // let changelogLine = "\n- ";
@@ -58,6 +62,7 @@ async function main() {
 
     const path = "./Readme.md";
     const fileContents = readFileSync(path,'utf8');
+    console.log("splitting file");
     const splitFile = fileContents.split("## Unreleased\n");
     let finalContents = `${splitFile[0]}## Unreleased\n`;
     finalContents += changelogLine;
