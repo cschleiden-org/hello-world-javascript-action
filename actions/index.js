@@ -17,10 +17,11 @@ async function main() {
     const prLink = github.context.payload.pull_request.html_url;
     const prNum = github.context.payload.pull_request.number;
 
-    let prSearchableBody = prBody;
+    let prTempBody = prBody;
     if (prBody.search('-->') !== -1) {
-      prSearchableBody = prBody.split("-->");
+      prTempBody = prBody.split("-->");
     }
+    const prSearchableBody = prTempBody;
     const feature = prSearchableBody.search('[Feature]');
     const patch = prSearchableBody.search('[Patch]'); 
     const release = prSearchableBody.search('[Release]');
