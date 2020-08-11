@@ -37,14 +37,14 @@ async function main() {
     if (await existsAsync(path)) {
       console.log("path exists");
     }
-    await appendFileAsync(path, `\n${changelogLine}`);
+    await appendFileAsync(path, `${changelogLine}`);
     // const statResult = await statAsync("./Readme.md");
     // setOutput("size", `${statResult.size}`);
     const time = (new Date()).toTimeString();
     core.setOutput("time", time);
     // Get the JSON webhook payload for the event that triggered the workflow
-    // const payload = JSON.stringify(github.context.payload, undefined, 2)
-    // console.log(`The event payload: ${payload}`);
+    const payload = JSON.stringify(github.context.payload, undefined, 2)
+    console.log(`The event payload: ${payload}`);
   } catch (error) {
     core.setFailed(error.message);
   }
