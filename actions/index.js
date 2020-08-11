@@ -14,7 +14,7 @@ async function main() {
   try {
     // `who-to-greet` input defined in action metadata file
     const prName = github.context.payload.pull_request.title;
-    const prSplit = prName.split("(");
+    let prSplit = prName.split("(");
     let changelogLine = "- ";
     switch (prSplit[0]) {
       case 'feat':
