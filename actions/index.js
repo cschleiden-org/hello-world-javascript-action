@@ -17,10 +17,10 @@ async function main() {
     const prLink = github.context.payload.pull_request.html_url;
     const prNum = github.context.payload.pull_request.number;
 
-    const commentExists = prBody.search('-->');
-    if (commentExists !== -1) {
-      prBody = prBody.split("-->");
-    }
+    // const commentExists = prBody.search('-->');
+    // if (commentExists !== -1) {
+    //   prBody = prBody.split("-->");
+    // }
 
     const feature = prBody.search('[Feature]');
     const patch = prBody.search('[Patch]'); 
