@@ -10,7 +10,7 @@ What did you change and why?
 
 Please remember to add tests for all new functionality
 
-##Jira
+## Jira
 
 Please list and link the associated JIRA ticket
 
