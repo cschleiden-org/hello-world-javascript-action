@@ -14,6 +14,8 @@ async function main() {
   try {
     // `who-to-greet` input defined in action metadata file
     const prName = github.context.payload.pull_request.title;
+    const prLink = github.context.payload.pull_request.html_url;
+    const prNum = github.context.payload.pull_request.number;
     let prSplit = prName.split("(");
     let changelogLine = "- ";
     switch (prSplit[0]) {
@@ -31,8 +33,9 @@ async function main() {
     }
     prSplit = prSplit[1].split(")");
     changelogLine += prSplit[1];
-    changelogLine += " in **" + prSplit[0] + "**"
-    console.log(prName);
+    changelogLine += " in **" + prSplit[0] + "**";
+    changelogLine += ` ([#${prNum}](${prLink}))`;
+    console.log(changelogLine);
     const path = "./Readme.md"
     if (await existsAsync(path)) {
       console.log("path exists");
