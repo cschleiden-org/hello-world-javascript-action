@@ -13,9 +13,23 @@ main().catch((error) => setFailed(error.message));
 async function main() {
   try {
     // `who-to-greet` input defined in action metadata file
-    const prName = github.context.payload.pull_request.title;
+    const prBody = github.context.payload.body;
     const prLink = github.context.payload.pull_request.html_url;
     const prNum = github.context.payload.pull_request.number;
+    const feature = prBody.search('[Feature]');
+    const patch = prBody.search('[Patch]'); 
+    const release = prBody.search('[Release]');
+    const changelogLocation = feature !== -1 ? feature :
+      (patch !== -1 ? patch : release)
+    if (changelogLocation === -1) {
+      return;
+    }
+    const changelogKey = feature !== -1 ? '[Feature]' :
+    (patch !== -1 ? '[Patch]' : '[Release]')
+
+    let prSplit = prBody.split(changelogKey)[1];
+    prSplit = prSplit.split("\n")[0];
+    const changelogLine = `\n- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))`;
     // let prSplit = prName.split("(");
     // let changelogLine = "\n- ";
     // switch (prSplit[0]) {
@@ -35,18 +49,18 @@ async function main() {
     // changelogLine += `${prSplit[1]} in **${prSplit[0]}** ([#${prNum}](${prLink}))`;
     // console.log(changelogLine);
 
-    // const path = "./Readme.md";
-    // const fileContents = readFileSync(path,'utf8');
-    // const splitFile = fileContents.split("## Unreleased\n");
-    // let finalContents = `${splitFile[0]}## Unreleased\n`;
-    // finalContents += changelogLine;
-    // // console.log(splitFile[1][0:10])
-    // if (splitFile[1][2] == "#") {
-    //   finalContents += "\n";
-    // }
-    // finalContents += splitFile[1];
+    const path = "./Readme.md";
+    const fileContents = readFileSync(path,'utf8');
+    const splitFile = fileContents.split("## Unreleased\n");
+    let finalContents = `${splitFile[0]}## Unreleased\n`;
+    finalContents += changelogLine;
+    // console.log(splitFile[1][0:10])
+    if (splitFile[1][2] == "#") {
+      finalContents += "\n";
+    }
+    finalContents += splitFile[1];
 
-    // await writeFileAsync(path, finalContents);
+    await writeFileAsync(path, finalContents);
     // const statResult = await statAsync("./Readme.md");
     // setOutput("size", `${statResult.size}`);
     const time = (new Date()).toTimeString();
