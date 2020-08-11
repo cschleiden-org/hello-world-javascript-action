@@ -27,6 +27,10 @@ async function main() {
     const feature = prBody.search('[Feature]');
     const patch = prBody.search('[Patch]'); 
     const release = prBody.search('[Release]');
+    console.log("Feature", feature);
+    console.log("patch", patch);
+    console.log("release", release);
+    console.log("-------------------------");
     const changelogLocation = feature !== -1 ? feature :
       (patch !== -1 ? patch : release)
     if (changelogLocation === -1) {
