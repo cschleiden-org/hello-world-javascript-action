@@ -17,16 +17,16 @@ async function main() {
     const prLink = github.context.payload.pull_request.html_url;
     const prNum = github.context.payload.pull_request.number;
   
-    if (prBody.search('-->') !== -1) {
+    if (prBody.indexOf('-->') !== -1) {
       console.log("splitting for comment");
       
       prBody = prBody.split("-->")[1];
       console.log(prBody);
       console.log("-------------------------");
     }
-    const feature = prBody.search('[Feature]');
-    const patch = prBody.search('[Patch]'); 
-    const release = prBody.search('[Release]');
+    const feature = prBody.indexOf('[Feature]');
+    const patch = prBody.indexOf('[Patch]'); 
+    const release = prBody.indexOf('[Release]');
     console.log("Feature", feature);
     console.log("patch", patch);
     console.log("release", release);
