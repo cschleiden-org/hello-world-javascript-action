@@ -6,7 +6,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 This file is similar to the format suggested by [Keep a CHANGELOG](https://github.com/olivierlacan/keep-a-changelog).
 
 ## Unreleased
-- [Release] Remove `word-break` helper class in favor of `word-break--all` ([#1394](https://github.com/optimizely/oui/pull/1394))
 
 ## 47.0.0 - 2020-08-07
 - [Release] Remove `word-break` helper class in favor of `word-break--all` ([#1394](https://github.com/optimizely/oui/pull/1394))
