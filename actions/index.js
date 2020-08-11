@@ -17,12 +17,13 @@ async function main() {
     const prLink = github.context.payload.pull_request.html_url;
     const prNum = github.context.payload.pull_request.number;
 
+    let prSearchableBody = prBody;
     if (prBody.search('-->') !== -1) {
-      prBody = prBody.split("-->");
+      prSearchableBody = prBody.split("-->");
     }
-    const feature = prBody.search('[Feature]');
-    const patch = prBody.search('[Patch]'); 
-    const release = prBody.search('[Release]');
+    const feature = prSearchableBody.search('[Feature]');
+    const patch = prSearchableBody.search('[Patch]'); 
+    const release = prSearchableBody.search('[Release]');
     const changelogLocation = feature !== -1 ? feature :
       (patch !== -1 ? patch : release)
     if (changelogLocation === -1) {
@@ -31,7 +32,7 @@ async function main() {
     const changelogKey = feature !== -1 ? '[Feature]' :
     (patch !== -1 ? '[Patch]' : '[Release]')
 
-    let prSplit = prBody.split(changelogKey)[1];
+    let prSplit = prSearchableBody.split(changelogKey)[1];
     prSplit = prSplit.split("\n")[0];
     const changelogLine = `\n- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))`;
     // let prSplit = prName.split("(");
