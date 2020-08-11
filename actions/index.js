@@ -22,6 +22,7 @@ async function main() {
       
       prBody = prBody.split("-->")[1];
       console.log(prBody);
+      console.log("-------------------------");
     }
     const feature = prBody.search('[Feature]');
     const patch = prBody.search('[Patch]'); 
@@ -33,14 +34,18 @@ async function main() {
     }
     const changelogKey = feature !== -1 ? '[Feature]' :
     (patch !== -1 ? '[Patch]' : '[Release]')
-
+    console.log("change key");
+    console.log(changelogKey);
+    console.log("-------------------------");
     console.log("splitting for change key");
     let prSplit = prBody.split(changelogKey)[1];
     console.log(prBody.split(changelogKey)[0]);
     console.log(prSplit);
+    console.log("-------------------------");
     console.log("splitting for new line");
     prSplit = prSplit.split("\n")[0];
     console.log(prSplit);
+    console.log("-------------------------");
     const changelogLine = `\n- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))`;
     // let prSplit = prName.split("(");
     // let changelogLine = "\n- ";
