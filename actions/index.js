@@ -17,7 +17,7 @@ async function main() {
     const prLink = github.context.payload.pull_request.html_url;
     const prNum = github.context.payload.pull_request.number;
     let prSplit = prName.split("(");
-    let changelogLine = "- ";
+    let changelogLine = "\n- ";
     switch (prSplit[0]) {
       case 'feat':
         changelogLine += "[Feature]";
@@ -38,8 +38,11 @@ async function main() {
     const path = "./Readme.md";
     const fileContents = readFileSync(path,'utf8');
     const splitFile = fileContents.split("## Unreleased\n");
-    console.log(splitFile[0]);
-    await appendFileAsync(path, `${changelogLine}`);
+    let finalContents = `${splitFile[0]}## Unreleased\n`;
+    finalContents += changelogLine;
+    finalContents += splitFile[1];
+
+    await writeFileAsync(path, finalContents);
     // const statResult = await statAsync("./Readme.md");
     // setOutput("size", `${statResult.size}`);
     const time = (new Date()).toTimeString();
