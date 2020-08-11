@@ -37,12 +37,11 @@ async function main() {
     console.log(changelogLine);
 
     const path = "./Readme.md";
-    let fileContents;
-    await readFileAsync(path, function read(err, data) {
+    const fileContents = await readFileAsync(path, 'utf8', function read(err, data) {
       if (err) {
           throw err;
       }
-      fileContents = data;
+      return data;
     });
     const splitFile = fileContents.split("## Unreleased\n");
     console.log(splitFile[0]);
