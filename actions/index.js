@@ -18,6 +18,7 @@ async function main() {
     const prNum = github.context.payload.pull_request.number;
   
     if (prBody.search('-->') !== -1) {
+      console.log("splitting for comment");
       prBody = prBody.split("-->")[1];
     }
     const feature = prBody.search('[Feature]');
@@ -31,7 +32,9 @@ async function main() {
     const changelogKey = feature !== -1 ? '[Feature]' :
     (patch !== -1 ? '[Patch]' : '[Release]')
 
+    console.log("splitting for change key");
     let prSplit = prBody.split(changelogKey)[1];
+    console.log("splitting for new line");
     prSplit = prSplit.split("\n")[0];
     const changelogLine = `\n- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))`;
     // let prSplit = prName.split("(");
