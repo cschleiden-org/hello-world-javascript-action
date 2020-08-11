@@ -36,6 +36,7 @@ async function main() {
 
     console.log("splitting for change key");
     let prSplit = prBody.split(changelogKey)[1];
+    console.log(prBody.split(changelogKey)[0]);
     console.log(prSplit);
     console.log("splitting for new line");
     prSplit = prSplit.split("\n")[0];
