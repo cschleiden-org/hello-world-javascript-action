@@ -13,7 +13,7 @@ main().catch((error) => setFailed(error.message));
 async function main() {
   try {
     // `who-to-greet` input defined in action metadata file
-    const prBody = github.context.payload.body;
+    const prBody = github.context.payload.pull_request.body;
     const prLink = github.context.payload.pull_request.html_url;
     const prNum = github.context.payload.pull_request.number;
     const feature = prBody.search('[Feature]');
