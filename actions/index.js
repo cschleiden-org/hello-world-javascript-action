@@ -13,9 +13,13 @@ main().catch((error) => setFailed(error.message));
 async function main() {
   try {
     // `who-to-greet` input defined in action metadata file
-    const prBody = github.context.payload.pull_request.body;
+    let prBody = github.context.payload.pull_request.body ? github.context.payload.pull_request.body : '';
     const prLink = github.context.payload.pull_request.html_url;
     const prNum = github.context.payload.pull_request.number;
+
+    if (prBody.search('-->') !== -1) {
+      prBody = prBody.split("-->");
+    }
     const feature = prBody.search('[Feature]');
     const patch = prBody.search('[Patch]'); 
     const release = prBody.search('[Release]');
