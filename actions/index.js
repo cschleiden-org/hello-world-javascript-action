@@ -40,7 +40,7 @@ async function main() {
     const splitFile = fileContents.split("## Unreleased\n");
     let finalContents = `${splitFile[0]}## Unreleased\n`;
     finalContents += changelogLine;
-    if (splitFile[1][0] == "\n#") {
+    if (splitFile[1][2] == "\n#") {
       finalContents += "\n";
     }
     finalContents += splitFile[1];
