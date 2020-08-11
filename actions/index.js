@@ -13,15 +13,31 @@ main().catch((error) => setFailed(error.message));
 async function main() {
   try {
     // `who-to-greet` input defined in action metadata file
-    const nameToGreet = core.getInput('who-to-greet');
-    console.log(`Hello ${nameToGreet}!`);
     const prName = github.context.payload.pull_request.title;
+    const prSplit = prName.split("(");
+    let changelogLine = "- ";
+    switch (prSplit[0]) {
+      case 'feat':
+        changelogLine += "[Feature] ";
+        break;
+      case 'patch':
+        changelogLine += "[Patch] ";
+        break;
+      case 'real':
+        changelogLine += "[Release] ";
+        break;
+      default:
+        return;
+    }
+    prSplit = prSplit[1].split(")");
+    changelogLine += prSplit[1];
+    changelogLine += " in **" + prSplit[0] + "**"
     console.log(prName);
     const path = "./Readme.md"
     if (await existsAsync(path)) {
       console.log("path exists");
     }
-    await appendFileAsync(path, `\n ${prName}`);
+    await appendFileAsync(path, `\n${changelogLine}`);
     // const statResult = await statAsync("./Readme.md");
     // setOutput("size", `${statResult.size}`);
     const time = (new Date()).toTimeString();

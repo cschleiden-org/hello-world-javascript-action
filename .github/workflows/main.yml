@@ -18,10 +18,10 @@ jobs:
           who-to-greet: 'Mona the Octocat'
       - name: Commit report
         run: |
-          git config --global user.name 'Your Name'
-          git config --global user.email 'your-username@users.noreply.github.com'
+          git config --global user.name 'Automated Action'
+          git config --global user.email 'automatic-changelog@users.noreply.github.com'
           git add Readme.md
-          git commit -am "Automated report"
+          git commit -am "Updated CHANGELOG.MD"
           git push
       # Use the output from the `hello` step
       - name: Get the output time
