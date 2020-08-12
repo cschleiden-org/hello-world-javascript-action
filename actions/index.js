@@ -18,19 +18,12 @@ async function main() {
     const prNum = github.context.payload.pull_request.number;
   
     if (prBody.indexOf('-->') !== -1) {
-      console.log("splitting for comment");
-      
       prBody = prBody.split("-->")[1];
-      console.log(prBody);
-      console.log("-------------------------");
     }
     const feature = prBody.indexOf('[Feature]');
     const patch = prBody.indexOf('[Patch]'); 
     const release = prBody.indexOf('[Release]');
-    console.log("Feature", feature);
-    console.log("patch", patch);
-    console.log("release", release);
-    console.log("-------------------------");
+
     const changelogLocation = feature !== -1 ? feature :
       (patch !== -1 ? patch : release)
     if (changelogLocation === -1) {
@@ -38,37 +31,13 @@ async function main() {
     }
     const changelogKey = feature !== -1 ? '[Feature]' :
     (patch !== -1 ? '[Patch]' : '[Release]')
-    console.log("change key");
-    console.log(changelogKey);
-    console.log("-------------------------");
-    console.log("splitting for change key");
+
     let prSplit = prBody.split(changelogKey)[1];
-    console.log(prBody.split(changelogKey)[0]);
-    console.log(prSplit);
-    console.log("-------------------------");
-    console.log("splitting for new line");
+
     prSplit = prSplit.split("\n")[0];
+    console.log("prSplit");
     console.log(prSplit);
-    console.log("-------------------------");
     const changelogLine = `- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))`;
-    // let prSplit = prName.split("(");
-    // let changelogLine = "\n- ";
-    // switch (prSplit[0]) {
-    //   case 'feat':
-    //     changelogLine += "[Feature]";
-    //     break;
-    //   case 'patch':
-    //     changelogLine += "[Patch]";
-    //     break;
-    //   case 'real':
-    //     changelogLine += "[Release]";
-    //     break;
-    //   default:
-    //     return;
-    // }
-    // prSplit = prSplit[1].split(")");
-    // changelogLine += `${prSplit[1]} in **${prSplit[0]}** ([#${prNum}](${prLink}))`;
-    // console.log(changelogLine);
 
     const path = "./Readme.md";
     const fileContents = readFileSync(path,'utf8');
@@ -76,10 +45,7 @@ async function main() {
     const splitFile = fileContents.split("## Unreleased\n");
     let finalContents = `${splitFile[0]}## Unreleased\n`;
     finalContents += changelogLine;
-    // console.log(splitFile[1][0:10])
-    // if (splitFile[1][2] == "#") {
-      finalContents += "\n";
-    //}
+    finalContents += "\n";
     finalContents += splitFile[1];
 
     await writeFileAsync(path, finalContents);
