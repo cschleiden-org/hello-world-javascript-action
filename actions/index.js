@@ -34,7 +34,7 @@ async function main() {
 
     let prSplit = prBody.split(changelogKey)[1];
 
-    prSplit = prSplit.split("/\r?\n/")[0];
+    prSplit = prSplit.split(/\r?\n/)[0];
     console.log("prSplit");
     console.log(prSplit);
     let changelogLine = "- ";
