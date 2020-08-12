@@ -50,7 +50,7 @@ async function main() {
     prSplit = prSplit.split("\n")[0];
     console.log(prSplit);
     console.log("-------------------------");
-    const changelogLine = `- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))\n`;
+    const changelogLine = `- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))`;
     // let prSplit = prName.split("(");
     // let changelogLine = "\n- ";
     // switch (prSplit[0]) {
@@ -77,9 +77,9 @@ async function main() {
     let finalContents = `${splitFile[0]}## Unreleased\n`;
     finalContents += changelogLine;
     // console.log(splitFile[1][0:10])
-    if (splitFile[1][2] == "#") {
+    // if (splitFile[1][2] == "#") {
       finalContents += "\n";
-    }
+    //}
     finalContents += splitFile[1];
 
     await writeFileAsync(path, finalContents);
