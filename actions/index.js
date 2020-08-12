@@ -13,7 +13,7 @@ main().catch((error) => setFailed(error.message));
 async function main() {
   try {
     // Get PR information
-    const prBody = github.context.payload.pull_request.body;
+    let prBody = github.context.payload.pull_request.body;
     const prLink = github.context.payload.pull_request.html_url;
     const prNum = github.context.payload.pull_request.number;
   
