@@ -34,10 +34,11 @@ async function main() {
 
     let prSplit = prBody.split(changelogKey)[1];
 
-    prSplit = prSplit.split("^M\n")[0];
+    prSplit = prSplit.split("\n")[0];
     console.log("prSplit");
     console.log(prSplit);
-    const changelogLine = `- ${changelogKey}${prSplit} ([#${prNum}](${prLink}))`;
+    let changelogLine = `- ${changelogKey}${prSplit}`
+    changelogLine += ` ([#${prNum}](${prLink}))`;
 
     const path = "./Readme.md";
     const fileContents = readFileSync(path,'utf8');
