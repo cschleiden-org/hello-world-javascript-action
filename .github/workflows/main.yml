@@ -3,7 +3,7 @@ on: [pull_request]
 jobs:
   hello_world_job:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Update CHANGELOG.md
     steps:
       # To use this repository's private action,
       # you must check out the repository
@@ -11,19 +11,15 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-      - name: Hello world action step
+      - name: Updating changelog file
         uses: ./actions/ # Uses an action in the root directory
-        id: hello
-        with:
-          who-to-greet: 'Mona the Octocat'
-      - name: Commit report
+        id: update
+      - name: Commit changelog
+        if: ${{ steps.update.outputs.success }}
         run: |
-          git config --global user.name 'Automated Action'
-          git config --global user.email 'automatic-changelog@users.noreply.github.com'
+          git config --global user.name 'Changelog Bot'
+          git config --global user.email 'changelog-bot@users.noreply.github.com'
           git add Readme.md
           git commit -am "Updated CHANGELOG.MD"
           git push
-      # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
             

@@ -12,51 +12,56 @@ main().catch((error) => setFailed(error.message));
 
 async function main() {
   try {
-    // `who-to-greet` input defined in action metadata file
-    let prBody = github.context.payload.pull_request.body ? github.context.payload.pull_request.body : '';
+    // Get PR information
+    const prBody = github.context.payload.pull_request.body;
     const prLink = github.context.payload.pull_request.html_url;
     const prNum = github.context.payload.pull_request.number;
   
+    // Parse out the explanation comment if necessary
     if (prBody.indexOf('-->') !== -1) {
       prBody = prBody.split("-->")[1];
     }
+
+    // Find the location of the changelog line in the PR comment
     const feature = prBody.indexOf('[Feature]');
     const patch = prBody.indexOf('[Patch]'); 
     const release = prBody.indexOf('[Release]');
 
     const changelogLocation = feature !== -1 ? feature :
       (patch !== -1 ? patch : release)
+    // if not present quit action
     if (changelogLocation === -1) {
+      core.setOutput("success", false);
       return;
     }
+
+    // Get the changelog line
     const changelogKey = feature !== -1 ? '[Feature]' :
     (patch !== -1 ? '[Patch]' : '[Release]')
-
     let prSplit = prBody.split(changelogKey)[1];
-
     prSplit = prSplit.split(/\r?\n/)[0];
-    console.log("prSplit");
-    console.log(prSplit);
+    
+    // format the final changelog line
     let changelogLine = "- ";
     changelogLine = changelogLine.concat(changelogKey, prSplit, " ([#", prNum, '](', prLink, "))");
 
-    const path = "./Readme.md";
+    // get the changelog file
+    const path = "./CHANGELOG.md";
     const fileContents = readFileSync(path,'utf8');
-    console.log("splitting file");
+
+    // Parse through the changelog to find insertion point
     const splitFile = fileContents.split("## Unreleased\n");
     let finalContents = `${splitFile[0]}## Unreleased\n`;
+
+    // add the the changelogline
     finalContents += changelogLine;
     finalContents += "\n";
     finalContents += splitFile[1];
 
+    // write to file
     await writeFileAsync(path, finalContents);
-    // const statResult = await statAsync("./Readme.md");
-    // setOutput("size", `${statResult.size}`);
-    const time = (new Date()).toTimeString();
-    core.setOutput("time", time);
-    // Get the JSON webhook payload for the event that triggered the workflow
-    const payload = JSON.stringify(github.context.payload, undefined, 2)
-    console.log(`The event payload: ${payload}`);
+
+    core.setOutput("success", true);
   } catch (error) {
     core.setFailed(error.message);
   }
