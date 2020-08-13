@@ -66,7 +66,7 @@ async function main() {
         issue_number: prNum,
       });
 
-      console.log(prComments.data[-1]);
+      console.log(prComments.data.pop());
 
       // // get the changelog file
       // const path = "./CHANGELOG.md";
