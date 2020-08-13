@@ -16,12 +16,8 @@ jobs:
         id: update
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: debug this thing
-        run: |
-          echo 'The value is' ${{ steps.update.outputs.failed }}
-          echo 'The evaluation is' ${{ steps.update.outputs.failed == true }}
       - name: Commit changelog
-        if: ${{ steps.update.outputs.failed }}
+        if: ${{ steps.update.outputs.success }}
         run: |
           git config --global user.name 'Changelog Bot'
           git config --global user.email 'changelog-bot@users.noreply.github.com'

@@ -1,7 +1,7 @@
 name: 'Update changelog'
 description: 'Update changelog with correct update line'
 outputs:
-  failed: # boolean
+  success: # boolean
     description: 'Was adding to changelog successful?'
 runs:
   using: 'node12'

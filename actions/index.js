@@ -40,7 +40,7 @@ async function main() {
 
     if (!payload.pull_request.head.repo) {
       core.info('unable to determine repository from request type');
-      core.setOutput("failed", true);
+      core.setOutput("success", false);
       return;
     }
     
@@ -120,7 +120,7 @@ async function main() {
     // }
     console.log("success", !foundline);
 
-    core.setOutput("failed", foundline);
+    core.setOutput("success", foundline);
   } catch (error) {
     core.setFailed(error.message);
   }
