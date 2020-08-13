@@ -10,7 +10,7 @@ const statAsync = promisify(stat);
 
 main().catch((error) => setFailed(error.message));
 
-function writeToFile(changelogLine) {
+async function writeToFile(changelogLine) {
   // get the changelog file
   const path = "./CHANGELOG.md";
   const fileContents = readFileSync(path,'utf8');
@@ -99,7 +99,7 @@ async function main() {
       lastComment = lastComment.split("\n```")[0];
       if (lastComment === changelogLine) { pushComment= false}
 
-      writeToFile(changelogLine);
+      await writeToFile(changelogLine);
       commentMessage= ":tada:  Updated the Unreleased section of the Changelog with: \n```\n".concat(changelogLine, "\n```");
     }
 
