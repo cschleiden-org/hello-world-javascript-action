@@ -75,13 +75,14 @@ async function main() {
       return;
     }
     
-    const full_name = payload.pull_request.head.repo;
+    let full_name = "";
+    full_name = payload.pull_request.head.repo;
     const [owner, repo] = full_name.split('/');
 
     const repoToken = process.env['GITHUB_TOKEN'];
     const octokit = github.getOctokit(repoToken)
     
-    let shouldCreateComment = true
+    let shouldCreateComment = true;
 
     // if (!allowRepeats) {
     //   core.debug('repeat comments are disallowed, checking for existing')
