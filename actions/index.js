@@ -107,8 +107,6 @@ async function main() {
         lastComment = lastComment.split("```\n")[1];
         lastComment = lastComment.split("\n```")[0];
         if (lastComment === changelogLine) { pushComment= false}
-      } else {
-        pushComment = false;
       }
 
       await writeToFile(changelogLine);
@@ -130,8 +128,6 @@ async function main() {
     //} else {
     //   core.setOutput('comment-created', 'false')
     // }
-    console.log("success", !foundline);
-
     core.setOutput("success", foundline);
   } catch (error) {
     core.setFailed(error.message);
