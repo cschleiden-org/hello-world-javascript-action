@@ -45,7 +45,10 @@ async function main() {
       core.setOutput("success", false);
       return;
     }
-    
+    console.log("prBody", prBody);
+    console.log("prLink", prLink);
+    console.log("PrNum", prNum);
+    console.log("head repo", payload.pull_request.head.repo);
     const full_name = payload.pull_request.head.repo.full_name;
     const [owner, repo] = full_name.split('/');
 
