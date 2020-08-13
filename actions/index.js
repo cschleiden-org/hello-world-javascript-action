@@ -20,7 +20,7 @@ async function main() {
     const prLink = payload.pull_request.html_url;
     const prNum = payload.pull_request.number;
     const payload2 = JSON.stringify(payload, undefined, 2)
-    core.info(`The event payload: ${payload2}`);
+    // core.info(`The event payload: ${payload2}`);
   
     // Parse out the explanation comment if necessary
     if (prBody.indexOf('-->') !== -1) {
@@ -77,6 +77,7 @@ async function main() {
     
     let full_name = "";
     full_name = payload.pull_request.head.repo;
+    core.info("full_name", full_name);
     const [owner, repo] = full_name.split('/');
 
     const repoToken = process.env['GITHUB_TOKEN'];
