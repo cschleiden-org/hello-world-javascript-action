@@ -19,19 +19,26 @@ async function main() {
     let prBody = payload.pull_request.body;
     const prLink = payload.pull_request.html_url;
     const prNum = payload.pull_request.number;
+
+    if (!payload.pull_request.head.repo) {
+      core.info('unable to determine repository from request type')
+      return;
+    }
+    
+    const full_name = payload.pull_request.head.repo.full_name;
+    const [owner, repo] = full_name.split('/');
+
+    const repoToken = process.env['GITHUB_TOKEN'];
+    const octokit = github.getOctokit(repoToken);
   
     // Parse out the explanation comment if necessary
     if (prBody.indexOf('-->') !== -1) {
       prBody = prBody.split("-->")[1];
     }
-    console.log("prBody", prBody);
     // Find the location of the changelog line in the PR comment
     const feature = prBody.indexOf('[Feature]');
     const patch = prBody.indexOf('[Patch]'); 
     const release = prBody.indexOf('[Release]');
-    console.log("feature", feature);
-    console.log("patch", patch);
-    console.log("release", release);
 
     const changelogLocation = feature !== -1 ? feature :
       (patch !== -1 ? patch : release)
@@ -54,37 +61,33 @@ async function main() {
       let changelogLine = "- ";
       changelogLine = changelogLine.concat(changelogKey, prSplit, " ([#", prNum, '](', prLink, "))");
 
-      // get the changelog file
-      const path = "./CHANGELOG.md";
-      const fileContents = readFileSync(path,'utf8');
+      const prComments = await octokit.issues.listComments({
+        owner,
+        repo,
+        issue_number: prNum,
+      });
 
-      // Parse through the changelog to find insertion point
-      const splitFile = fileContents.split("## Unreleased\n");
-      let finalContents = `${splitFile[0]}## Unreleased\n`;
+      console.log(prComments[-1]);
 
-      // add the the changelogline
-      finalContents += changelogLine;
-      finalContents += "\n";
-      finalContents += splitFile[1];
+      // // get the changelog file
+      // const path = "./CHANGELOG.md";
+      // const fileContents = readFileSync(path,'utf8');
 
-      // write to file
-      await writeFileAsync(path, finalContents);
-      commentMessage= ":tada:  Updated the Unreleased section of the Changelog with \n```\n" + changelogLine + "\n```"
+      // // Parse through the changelog to find insertion point
+      // const splitFile = fileContents.split("## Unreleased\n");
+      // let finalContents = `${splitFile[0]}## Unreleased\n`;
+
+      // // add the the changelogline
+      // finalContents += changelogLine;
+      // finalContents += "\n";
+      // finalContents += splitFile[1];
+
+      // // write to file
+      // await writeFileAsync(path, finalContents);
+      // commentMessage= ":tada:  Updated the Unreleased section of the Changelog with \n```\n" + changelogLine + "\n```"
     }
 
-    // start process for writing PR comment
-    if (!payload.pull_request.head.repo) {
-      core.info('unable to determine repository from request type')
-      return;
-    }
     
-    let full_name = "";
-    full_name = payload.pull_request.head.repo.full_name;
-    core.info("full_name", full_name);
-    const [owner, repo] = full_name.split('/');
-
-    const repoToken = process.env['GITHUB_TOKEN'];
-    const octokit = github.getOctokit(repoToken)
     
     let shouldCreateComment = true;
 
@@ -104,12 +107,12 @@ async function main() {
     // }
 
     // if (shouldCreateComment) {
-    await octokit.issues.createComment({
-      owner,
-      repo,
-      issue_number: prNum,
-      body: commentMessage,
-    })
+    // await octokit.issues.createComment({
+    //   owner,
+    //   repo,
+    //   issue_number: prNum,
+    //   body: commentMessage,
+    // })
       // }
 
     //  core.setOutput('comment-created', 'true')
