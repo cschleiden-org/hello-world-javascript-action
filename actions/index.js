@@ -19,18 +19,19 @@ async function main() {
     let prBody = payload.pull_request.body;
     const prLink = payload.pull_request.html_url;
     const prNum = payload.pull_request.number;
-    const payload2 = JSON.stringify(payload, undefined, 2)
-    // core.info(`The event payload: ${payload2}`);
   
     // Parse out the explanation comment if necessary
     if (prBody.indexOf('-->') !== -1) {
       prBody = prBody.split("-->")[1];
     }
-
+    core.info("prBody", prBody);
     // Find the location of the changelog line in the PR comment
     const feature = prBody.indexOf('[Feature]');
     const patch = prBody.indexOf('[Patch]'); 
     const release = prBody.indexOf('[Release]');
+    core.info("feature", feature);
+    core.info("patch", patch);
+    core.info("release", release);
 
     const changelogLocation = feature !== -1 ? feature :
       (patch !== -1 ? patch : release)
@@ -105,12 +106,12 @@ async function main() {
     }
 
     // if (shouldCreateComment) {
-        await octokit.issues.createComment({
-          owner,
-          repo,
-          issue_number: prNum,
-          body: message,
-        })
+    await octokit.issues.createComment({
+      owner,
+      repo,
+      issue_number: prNum,
+      body: message,
+    })
       // }
 
     //  core.setOutput('comment-created', 'true')
