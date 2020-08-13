@@ -13,12 +13,12 @@ main().catch((error) => setFailed(error.message));
 async function main() {
   try {
     const {
-      payload: {pull_request: repository},
+      payload
     } = github.context;
     // Get PR information
-    let prBody = pull_request.body;
-    const prLink = pull_request.html_url;
-    const prNum = pull_request.number;
+    let prBody = payload.pull_request.body;
+    const prLink = payload.pull_request.html_url;
+    const prNum = payload.pull_request.number;
   
     // Parse out the explanation comment if necessary
     if (prBody.indexOf('-->') !== -1) {
@@ -68,13 +68,13 @@ async function main() {
     }
 
     // start process for writing PR comment
-    if (!repository) {
+    if (!payload.pull_request.repository) {
       core.info('unable to determine repository from request type')
       return;
     }
     
-    const {full_name: repoFullName} = repository;
-    const [owner, repo] = repoFullName.split('/');
+    const full_name = payload.pull_request.repository;
+    const [owner, repo] = full_name.repoFullName.split('/');
 
     const repoToken = process.env['GITHUB_TOKEN'];
     const octokit = github.getOctokit(repoToken)
