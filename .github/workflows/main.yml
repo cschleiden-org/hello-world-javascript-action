@@ -17,7 +17,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: debug this thing
-        run: echo 'The value is' ${{ steps.update.outputs.failed }}
+        run: |
+          echo 'The value is' ${{ steps.update.outputs.failed }}
+          echo 'The evaluation is' ${{ steps.update.outputs.failed == false }}
       - name: Commit changelog
         if: ${{ steps.update.outputs.failed == false }}
         run: |
