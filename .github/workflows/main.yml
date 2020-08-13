@@ -17,7 +17,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Commit changelog
-        if: ${{ steps.update.outputs.failed == false }}
+        if: ${{ steps.update.outputs.failed === false }}
         run: |
           echo 'The value is' ${{ steps.update.outputs.failed }}
           git config --global user.name 'Changelog Bot'
