@@ -19,7 +19,8 @@ async function main() {
     let prBody = payload.pull_request.body;
     const prLink = payload.pull_request.html_url;
     const prNum = payload.pull_request.number;
-    core.info("payload:", payload);
+    const payload2 = JSON.stringify(payload, undefined, 2)
+    core.info(`The event payload: ${payload2}`);
   
     // Parse out the explanation comment if necessary
     if (prBody.indexOf('-->') !== -1) {
