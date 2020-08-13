@@ -103,9 +103,13 @@ async function main() {
       changelogLine = changelogLine.concat(changelogKey, prSplit, " ([#", prNum, '](', prLink, "))");
 
       console.log("lastComment", lastComment);
-      lastComment = lastComment.split("```\n")[1];
-      lastComment = lastComment.split("\n```")[0];
-      if (lastComment === changelogLine) { pushComment= false}
+      if (lastComment.indexOf('```') !== -1) {
+        lastComment = lastComment.split("```\n")[1];
+        lastComment = lastComment.split("\n```")[0];
+        if (lastComment === changelogLine) { pushComment= false}
+      } else {
+        pushComment = false;
+      }
 
       await writeToFile(changelogLine);
       commentMessage= ":tada:  Updated the Unreleased section of the Changelog with: \n```\n".concat(changelogLine, "\n```");
