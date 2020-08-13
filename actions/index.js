@@ -120,7 +120,7 @@ async function main() {
     // }
     console.log("success", !foundline);
 
-    core.setOutput("failed", !foundline);
+    core.setOutput("failed", foundline);
   } catch (error) {
     core.setFailed(error.message);
   }
