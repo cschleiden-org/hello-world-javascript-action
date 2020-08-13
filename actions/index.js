@@ -13,13 +13,12 @@ main().catch((error) => setFailed(error.message));
 async function main() {
   try {
     const {
-      payload: {pull_request: number, html_url, body, repository},
-      sha: commitSha,
+      payload: {pull_request: repository},
     } = github.context;
     // Get PR information
-    let prBody = body;
-    const prLink = html_url;
-    const prNum = number;
+    let prBody = pull_request.body;
+    const prLink = pull_request.html_url;
+    const prNum = pull_request.number;
   
     // Parse out the explanation comment if necessary
     if (prBody.indexOf('-->') !== -1) {
