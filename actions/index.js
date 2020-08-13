@@ -24,19 +24,20 @@ async function main() {
     if (prBody.indexOf('-->') !== -1) {
       prBody = prBody.split("-->")[1];
     }
-    core.info("prBody", prBody);
+    console.log("prBody", prBody);
     // Find the location of the changelog line in the PR comment
     const feature = prBody.indexOf('[Feature]');
     const patch = prBody.indexOf('[Patch]'); 
     const release = prBody.indexOf('[Release]');
-    core.info("feature", feature);
-    core.info("patch", patch);
-    core.info("release", release);
+    console.log("feature", feature);
+    console.log("patch", patch);
+    console.log("release", release);
 
     const changelogLocation = feature !== -1 ? feature :
       (patch !== -1 ? patch : release)
 
     let foundline = true;
+    let commentMessage = ":warning: No Changelog line provided, please update Changelog.md";
     // if not present quit action
     if (changelogLocation === -1) {
       core.setOutput("success", false);
@@ -68,6 +69,7 @@ async function main() {
 
       // write to file
       await writeFileAsync(path, finalContents);
+      commentMessage= ":tada: Updated the Unreleased section of the Changelog with `" + changelogLine + "`"
     }
 
     // start process for writing PR comment
@@ -100,17 +102,13 @@ async function main() {
     //     shouldCreateComment = false
     //   }
     // }
-    let message = ":warning: No Changelog line provided, please update Changelog.md"
-    if (foundline) {
-      message= ":tada: Updated the Unreleased section of the Changelog with `" + changelogLine + "`"
-    }
 
     // if (shouldCreateComment) {
     await octokit.issues.createComment({
       owner,
       repo,
       issue_number: prNum,
-      body: message,
+      body: commentMessage,
     })
       // }
 
