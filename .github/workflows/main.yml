@@ -14,6 +14,8 @@ jobs:
       - name: Updating changelog file
         uses: ./actions/ # Uses an action in the root directory
         id: update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Commit changelog
         if: ${{ steps.update.outputs.success == true }}
         run: |
