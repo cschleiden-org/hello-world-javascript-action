@@ -34,6 +34,8 @@ async function main() {
       payload
     } = github.context;
     // Get PR information
+    const payload = JSON.stringify(payload, undefined, 2)
+    console.log(`The event payload: ${payload}`);
     let prBody = payload.pull_request.body;
     const prLink = payload.pull_request.html_url;
     const prNum = payload.pull_request.number;
