@@ -34,8 +34,8 @@ async function main() {
       payload
     } = github.context;
     // Get PR information
-    const payload2 = JSON.stringify(payload, undefined, 2)
-    console.log(`The event payload: ${payload2}`);
+    // const payload2 = JSON.stringify(payload, undefined, 2)
+    // console.log(`The event payload: ${payload2}`);
     let prBody = payload.pull_request.body;
     const prLink = payload.pull_request.html_url;
     const prNum = payload.pull_request.number;
@@ -48,8 +48,8 @@ async function main() {
     console.log("prBody", prBody);
     console.log("prLink", prLink);
     console.log("PrNum", prNum);
-    console.log("head repo", payload.pull_request.head.repo);
     const full_name = payload.pull_request.head.repo.full_name;
+    console.log("full_name", full_name);
     const [owner, repo] = full_name.split('/');
 
     const repoToken = process.env['GITHUB_TOKEN'];
@@ -57,6 +57,7 @@ async function main() {
   
     // Parse out the explanation comment if necessary
     if (prBody.indexOf('-->') !== -1) {
+      console.log("prBody -->", prBody);
       prBody = prBody.split("-->")[1];
     }
     // Find the location of the changelog line in the PR comment
@@ -92,14 +93,16 @@ async function main() {
       // Get the changelog line
       const changelogKey = feature !== -1 ? '[Feature]' :
       (patch !== -1 ? '[Patch]' : '[Release]')
+      console.log("prBody changekey", prBody);
       let prSplit = prBody.split(changelogKey)[1];
+      console.log("prSplit rn", prSplit);
       prSplit = prSplit.split(/\r?\n/)[0];
       
       // format the final changelog line
       let changelogLine = "- ";
       changelogLine = changelogLine.concat(changelogKey, prSplit, " ([#", prNum, '](', prLink, "))");
 
-      
+      console.log("lastComment", lastComment);
       lastComment = lastComment.split("```\n")[1];
       lastComment = lastComment.split("\n```")[0];
       if (lastComment === changelogLine) { pushComment= false}
