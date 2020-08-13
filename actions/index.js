@@ -118,9 +118,9 @@ async function main() {
     //} else {
     //   core.setOutput('comment-created', 'false')
     // }
-    console.log("success", foundline);
+    console.log("success", !foundline);
 
-    core.setOutput("success", foundline);
+    core.setOutput("success", !foundline);
   } catch (error) {
     core.setFailed(error.message);
   }

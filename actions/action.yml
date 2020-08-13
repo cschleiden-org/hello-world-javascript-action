@@ -1,7 +1,7 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Update changelog'
+description: 'Update changelog with correct update line'
 outputs:
-  success: # boolean
+  failed: # boolean
     description: 'Was adding to changelog successful?'
 runs:
   using: 'node12'
