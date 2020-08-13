@@ -19,7 +19,7 @@ jobs:
       - name: debug this thing
         run: |
           echo 'The value is' ${{ steps.update.outputs.failed }}
-          echo 'The evaluation is' ${{ steps.update.outputs.failed == false }}
+          echo 'The evaluation is' ${{ steps.update.outputs.failed == true }}
       - name: Commit changelog
         if: ${{ steps.update.outputs.failed == false }}
         run: |
