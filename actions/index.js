@@ -83,7 +83,7 @@ async function main() {
 
       // // write to file
       // await writeFileAsync(path, finalContents);
-      // commentMessage= ":tada:  Updated the Unreleased section of the Changelog with \n```\n" + changelogLine + "\n```"
+      commentMessage= ":tada:  Updated the Unreleased section of the Changelog with \n```\n".concat(changelogLine, "\n```");
     }
 
     
@@ -106,12 +106,12 @@ async function main() {
     // }
 
     // if (shouldCreateComment) {
-    // await octokit.issues.createComment({
-    //   owner,
-    //   repo,
-    //   issue_number: prNum,
-    //   body: commentMessage,
-    // })
+    await octokit.issues.createComment({
+      owner,
+      repo,
+      issue_number: prNum,
+      body: commentMessage,
+    })
       // }
 
     //  core.setOutput('comment-created', 'true')
