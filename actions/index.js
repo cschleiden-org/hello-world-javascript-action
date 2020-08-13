@@ -76,7 +76,7 @@ async function main() {
     }
     
     let full_name = "";
-    full_name = payload.pull_request.head.repo;
+    full_name = payload.pull_request.head.repo.full_name;
     core.info("full_name", full_name);
     const [owner, repo] = full_name.split('/');
 
