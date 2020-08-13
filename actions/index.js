@@ -34,8 +34,6 @@ async function main() {
       payload
     } = github.context;
     // Get PR information
-    // const payload2 = JSON.stringify(payload, undefined, 2)
-    // console.log(`The event payload: ${payload2}`);
     let prBody = payload.pull_request.body;
     const prLink = payload.pull_request.html_url;
     const prNum = payload.pull_request.number;
@@ -45,11 +43,7 @@ async function main() {
       core.setOutput("success", false);
       return;
     }
-    console.log("prBody", prBody);
-    console.log("prLink", prLink);
-    console.log("PrNum", prNum);
     const full_name = payload.pull_request.head.repo.full_name;
-    console.log("full_name", full_name);
     const [owner, repo] = full_name.split('/');
 
     const repoToken = process.env['GITHUB_TOKEN'];
@@ -57,7 +51,6 @@ async function main() {
   
     // Parse out the explanation comment if necessary
     if (prBody.indexOf('-->') !== -1) {
-      console.log("prBody -->", prBody);
       prBody = prBody.split("-->")[1];
     }
     // Find the location of the changelog line in the PR comment
@@ -70,7 +63,7 @@ async function main() {
 
     let foundline = true;
     let pushComment = true;
-    let commentMessage = ":warning: No Changelog line provided, please update Changelog.md";
+    let commentMessage = ":warning: No Changelog line provided, please update the `Changelog Entry` section of the PR comment. Describe in one line your changes, like so: [Feature] Updated **ComponentName** with new `propName` to fix alignment ";
     
     const prComments = await octokit.issues.listComments({
       owner,
@@ -93,16 +86,13 @@ async function main() {
       // Get the changelog line
       const changelogKey = feature !== -1 ? '[Feature]' :
       (patch !== -1 ? '[Patch]' : '[Release]')
-      console.log("prBody changekey", prBody);
       let prSplit = prBody.split(changelogKey)[1];
-      console.log("prSplit rn", prSplit);
       prSplit = prSplit.split(/\r?\n/)[0];
       
       // format the final changelog line
       let changelogLine = "- ";
       changelogLine = changelogLine.concat(changelogKey, prSplit, " ([#", prNum, '](', prLink, "))");
 
-      console.log("lastComment", lastComment);
       if (lastComment.indexOf('```') !== -1) {
         lastComment = lastComment.split("```\n")[1];
         lastComment = lastComment.split("\n```")[0];
@@ -112,8 +102,6 @@ async function main() {
       await writeToFile(changelogLine);
       commentMessage= ":tada:  Updated the Unreleased section of the Changelog with: \n```\n".concat(changelogLine, "\n```");
     }
-
-    // if (shouldCreateComment) {
     if (pushComment) {
       await octokit.issues.createComment({
         owner,
@@ -122,12 +110,6 @@ async function main() {
         body: commentMessage,
       })
     }
-      // }
-
-    //  core.setOutput('comment-created', 'true')
-    //} else {
-    //   core.setOutput('comment-created', 'false')
-    // }
     core.setOutput("success", foundline);
   } catch (error) {
     core.setFailed(error.message);
