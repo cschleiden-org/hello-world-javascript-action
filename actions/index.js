@@ -47,7 +47,6 @@ async function main() {
     let commentMessage = ":warning: No Changelog line provided, please update Changelog.md";
     // if not present quit action
     if (changelogLocation === -1) {
-      core.setOutput("success", false);
       foundline= false;
     } else {
 
@@ -67,7 +66,7 @@ async function main() {
         issue_number: prNum,
       });
 
-      console.log(prComments);
+      console.log(prComments.data[-1]);
 
       // // get the changelog file
       // const path = "./CHANGELOG.md";
@@ -121,7 +120,7 @@ async function main() {
     // }
     
 
-    core.setOutput("success", true);
+    core.setOutput("success", foundline);
   } catch (error) {
     core.setFailed(error.message);
   }
