@@ -66,7 +66,10 @@ async function main() {
         issue_number: prNum,
       });
 
-      console.log(prComments.data.pop());
+      let lastComment = prComments.data.pop().body;
+      lastComment = lastComment.split("```\n")[1];
+      lastComment = lastComment.split("\n```")[0];
+      console.log(lastComment);
 
       // // get the changelog file
       // const path = "./CHANGELOG.md";
@@ -106,12 +109,12 @@ async function main() {
     // }
 
     // if (shouldCreateComment) {
-    await octokit.issues.createComment({
-      owner,
-      repo,
-      issue_number: prNum,
-      body: commentMessage,
-    })
+    // await octokit.issues.createComment({
+    //   owner,
+    //   repo,
+    //   issue_number: prNum,
+    //   body: commentMessage,
+    // })
       // }
 
     //  core.setOutput('comment-created', 'true')
