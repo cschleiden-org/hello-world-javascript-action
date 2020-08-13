@@ -70,13 +70,13 @@ async function main() {
     }
 
     // start process for writing PR comment
-    if (!payload.pull_request.repository) {
+    if (!payload.pull_request.head.repo) {
       core.info('unable to determine repository from request type')
       return;
     }
     
-    const full_name = payload.pull_request.repository;
-    const [owner, repo] = full_name.repoFullName.split('/');
+    const full_name = payload.pull_request.head.repo;
+    const [owner, repo] = full_name.split('/');
 
     const repoToken = process.env['GITHUB_TOKEN'];
     const octokit = github.getOctokit(repoToken)
