@@ -69,7 +69,7 @@ async function main() {
 
       // write to file
       await writeFileAsync(path, finalContents);
-      commentMessage= ":tada: Updated the Unreleased section of the Changelog with `" + changelogLine + "`"
+      commentMessage= ":tada: Updated the Unreleased section of the Changelog with '" + changelogLine + "'"
     }
 
     // start process for writing PR comment
